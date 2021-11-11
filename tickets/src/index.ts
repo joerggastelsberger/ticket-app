@@ -1,5 +1,5 @@
 import mongoose from "mongoose";
-import { natsWrapper } from "./nats-wrapper"
+import { natsWrapper } from "./nats-wrapper";
 
 import { app } from "./app";
 
@@ -13,6 +13,17 @@ const start = async () => {
 
   try {
     await natsWrapper.connect("ticketing", "asdfagrqa", "http://nats-srv:4222");
+    natsWrapper.client.on("close", () => {
+      console.log("NATS connection closed");
+      process.exit();
+    });
+    process.on("SIGINT", () => {
+      natsWrapper.client.close();
+    });
+    process.on("SIGTERM", () => {
+      natsWrapper.client.close();
+    });
+
     await mongoose.connect(process.env.MONGO_URI);
     console.log("Connected to MongoDb");
   } catch (error) {

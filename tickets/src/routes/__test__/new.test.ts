@@ -66,7 +66,7 @@ it("creates a ticket with valid inputs", async () => {
   expect(tickets.length).toEqual(0);
 
   const title = "test";
-  const price = "10";
+  const price = 10;
 
   await request(app)
     .post("/api/tickets")

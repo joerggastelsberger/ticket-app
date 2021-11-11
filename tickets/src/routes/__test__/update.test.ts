@@ -10,7 +10,7 @@ it("returns a 404 if the provided id does not exist", async () => {
     .set("Cookie", global.signup())
     .send({
       title: "test",
-      price: "20",
+      price: 20,
     })
     .expect(404);
 });
@@ -22,7 +22,7 @@ it("returns a 401 if the user is not authenticated", async () => {
     .put(`/api/tickets/${id}`)
     .send({
       title: "test",
-      price: "20",
+      price: 20,
     })
     .expect(401);
 });
@@ -33,7 +33,7 @@ it("returns a 401 if the user does not own the ticket", async () => {
     .set("Cookie", global.signup())
     .send({
       title: "test",
-      price: "20",
+      price: 20,
     });
 
   await request(app)
@@ -41,7 +41,7 @@ it("returns a 401 if the user does not own the ticket", async () => {
     .set("Cookie", global.signup())
     .send({
       title: "test1",
-      price: "21",
+      price: 21,
     })
     .expect(401);
 });
@@ -54,7 +54,7 @@ it("returns a 400 if the user provides an invalid title or price", async () => {
     .set("Cookie", cookie)
     .send({
       title: "test",
-      price: "20",
+      price: 20,
     });
 
   await request(app)
@@ -62,7 +62,7 @@ it("returns a 400 if the user provides an invalid title or price", async () => {
     .set("Cookie", cookie)
     .send({
       title: "",
-      price: "21",
+      price: 21,
     })
     .expect(400);
 
@@ -84,7 +84,7 @@ it("updates the ticket provided valid inputs", async () => {
     .set("Cookie", cookie)
     .send({
       title: "test",
-      price: "20",
+      price: 20,
     });
 
   await request(app)
@@ -92,7 +92,7 @@ it("updates the ticket provided valid inputs", async () => {
     .set("Cookie", cookie)
     .send({
       title: "test1",
-      price: "21",
+      price: 21,
     })
     .expect(200);
 
@@ -101,5 +101,5 @@ it("updates the ticket provided valid inputs", async () => {
     .send();
 
   expect(ticketResponse.body.title).toEqual("test1");
-  expect(ticketResponse.body.price).toEqual("21");
+  expect(ticketResponse.body.price).toEqual(21);
 });
