@@ -38,6 +38,10 @@ build:
       context: orders
       docker:
         dockerfile: Dockerfile
+    - image: us.gcr.io/ticketing-dev-326309/expiration
+      context: expiration
+      docker:
+        dockerfile: Dockerfile
       sync:
         manual:
           - src: 'src/**/*.ts'
