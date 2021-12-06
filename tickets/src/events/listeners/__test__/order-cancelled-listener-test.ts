@@ -1,32 +1,30 @@
 import mongoose from "mongoose";
 import { Message } from "node-nats-streaming";
-import { OrderCreatedEvent, OrderStatus } from "@joerggasttickets/common";
-import { OrderCreatedListener } from "../order-created-listener";
+import { OrderCancelledEvent } from "@joerggasttickets/common";
+import { OrderCancelledListener } from "../order-cancelled-listener";
 import { natsWrapper } from "../../../nats-wrapper";
 import { Ticket } from "../../../models/ticket";
 
 const setup = async () => {
   // Create an instance of the listener
-  const listener = new OrderCreatedListener(natsWrapper.client);
+  const listener = new OrderCancelledListener(natsWrapper.client);
 
   // Create and save a ticket
+  const orderId = new mongoose.Types.ObjectId().toHexString();
   const ticket = Ticket.build({
     title: "concert",
     price: 15,
     userId: "123",
   });
+  ticket.set({ orderId });
   await ticket.save();
 
   // Create the fake data event
-  const data: OrderCreatedEvent["data"] = {
-    id: new mongoose.Types.ObjectId().toHexString(),
+  const data: OrderCancelledEvent["data"] = {
+    id: orderId,
     version: 0,
-    status: OrderStatus.Created,
-    userId: "234",
-    expiresAt: "2344",
     ticket: {
       id: ticket.id,
-      price: ticket.price,
     },
   };
 
@@ -35,17 +33,19 @@ const setup = async () => {
     ack: jest.fn(),
   };
 
-  return { listener, ticket, data, msg };
+  return { listener, ticket, data, msg, orderId };
 };
 
-it("sets the orderId of the ticket", async () => {
-  const { listener, ticket, data, msg } = await setup();
+it("updateds the ticket, publishes an event and acks the message", async () => {});
+
+it("updates the ticket", async () => {
+  const { listener, ticket, data, msg, orderId } = await setup();
 
   await listener.onMessage(data, msg);
 
   const updatedTicket = await Ticket.findById(ticket.id);
 
-  expect(updatedTicket!.orderId).toEqual(data.id);
+  expect(updatedTicket!.orderId).not.toBeDefined();
 });
 
 it("acks the message", async () => {
