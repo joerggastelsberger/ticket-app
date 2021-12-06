@@ -36,8 +36,6 @@ const setup = async () => {
   return { listener, ticket, data, msg, orderId };
 };
 
-it("updateds the ticket, publishes an event and acks the message", async () => {});
-
 it("updates the ticket", async () => {
   const { listener, ticket, data, msg, orderId } = await setup();
 
