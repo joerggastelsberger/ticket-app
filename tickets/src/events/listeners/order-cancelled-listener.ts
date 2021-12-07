@@ -6,7 +6,7 @@ import {
 } from "@joerggasttickets/common";
 import { queueGroupName } from "./queue-group-name";
 import { Ticket } from "../../models/ticket";
-import { TicketUpdatedPublisher } from "../publisher/ticket-updated-publisher"
+import { TicketUpdatedPublisher } from "../publishers/ticket-updated-publisher"
 
 export class OrderCancelledListener extends Listener<OrderCancelledEvent> {
   subject: Subjects.OrderCancelled = Subjects.OrderCancelled;
