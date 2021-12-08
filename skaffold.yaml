@@ -42,6 +42,10 @@ build:
       context: expiration
       docker:
         dockerfile: Dockerfile
+    - image: us.gcr.io/ticketing-dev-326309/payments
+      context: payments
+      docker:
+        dockerfile: Dockerfile
       sync:
         manual:
           - src: 'src/**/*.ts'
