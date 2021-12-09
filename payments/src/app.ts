@@ -6,6 +6,7 @@ import {
   NotFoundError,
   currentUser,
 } from "@joerggasttickets/common";
+import { newChargeRouter } from "./routes/new";
 
 const app = express();
 app.set("trust proxy", true);
@@ -17,6 +18,8 @@ app.use(
   })
 );
 app.use(currentUser);
+
+app.use(newChargeRouter);
 
 app.all("*", async () => {
   throw new NotFoundError();
