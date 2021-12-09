@@ -23,7 +23,7 @@ app.use(newChargeRouter);
 
 app.all("*", async () => {
   throw new NotFoundError();
-});
+}); 
 
 app.use(errorHandler);
 
